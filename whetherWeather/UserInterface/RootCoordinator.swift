@@ -30,7 +30,7 @@ extension RootCoordinator: ForecastViewControllerDelegate {
         _ forecastViewController: ForecastViewController,
         didSelect forecast: Forecast
     ) {
-        
+        pushViewController(SingleDayForecastViewController(forecast: forecast), animated: true)
     }
 }
 

@@ -14,9 +14,9 @@ let mockResponse = """
 
 class WeatherDataSource {
     
-    func forecast(lat: Double, long: Double) -> AnyPublisher<OpenWeatherOneCallResponse, Error> {
+    func weeklyForecast(lat: Double, long: Double) -> AnyPublisher<WeeklyForecast, Error> {
         let data = mockResponse.data(using: .utf8)!
         let response = try! JSONDecoder().decode(OpenWeatherOneCallResponse.self, from: data)
-        return Just(response).setFailureType(to: Error.self).eraseToAnyPublisher()
+        return Just(response).map(WeeklyForecast.init).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
 }

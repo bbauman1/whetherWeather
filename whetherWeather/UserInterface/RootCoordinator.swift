@@ -14,15 +14,23 @@ class RootCoordinator: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("did laod")
-        let _ = weatherDataSource
-            .forecast(lat: 35, long: 139)
-            .sink(receiveCompletion: { _ in }) { response in
-                print("got response: \(response)")
-            }
-
+        setRootViewControllers()
     }
 
+    private func setRootViewControllers() {
+        let forecastViewController = ForecastViewController(weatherDataSource: weatherDataSource)
+        forecastViewController.delegate = self
+        
+        setViewControllers([forecastViewController], animated: true)
+    }
+}
 
+extension RootCoordinator: ForecastViewControllerDelegate {
+    func forecastViewController(
+        _ forecastViewController: ForecastViewController,
+        didSelect forecast: Forecast
+    ) {
+        
+    }
 }
 

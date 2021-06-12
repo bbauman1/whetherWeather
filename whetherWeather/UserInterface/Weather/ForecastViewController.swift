@@ -158,7 +158,10 @@ extension ForecastViewController {
 extension ForecastViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let forecast = dataSource.itemIdentifier(for: indexPath) else {
+            return
+        }
         
-        
+        delegate?.forecastViewController(self, didSelect: forecast)
     }
 }

@@ -111,10 +111,10 @@
 		A8A4B3A5267446C700179FB7 /* UserInterface */ = {
 			isa = PBXGroup;
 			children = (
-				A8A4B3CA2674694B00179FB7 /* Utils */,
-				A8A4B3BD2674649F00179FB7 /* Weather */,
 				A8EA5DD9267445A00064818A /* RootCoordinator.swift */,
 				A8A4B3A6267446CE00179FB7 /* Storyboards */,
+				A8A4B3CA2674694B00179FB7 /* Utils */,
+				A8A4B3BD2674649F00179FB7 /* Weather */,
 			);
 			path = UserInterface;
 			sourceTree = "<group>";
@@ -170,8 +170,8 @@
 		A8A4B3BA2674494200179FB7 /* Weather */ = {
 			isa = PBXGroup;
 			children = (
-				A8A4B3BB2674495100179FB7 /* WeatherDataSource.swift */,
 				A8A4B3C62674653C00179FB7 /* Forecast.swift */,
+				A8A4B3BB2674495100179FB7 /* WeatherDataSource.swift */,
 				A8A4B3C82674655800179FB7 /* WeeklyForecast.swift */,
 			);
 			path = Weather;
@@ -180,8 +180,8 @@
 		A8A4B3BD2674649F00179FB7 /* Weather */ = {
 			isa = PBXGroup;
 			children = (
-				A8A4B3BE267464B800179FB7 /* ForecastViewController.swift */,
 				A8A4B3C0267464CA00179FB7 /* ForecastTableViewCell.swift */,
+				A8A4B3BE267464B800179FB7 /* ForecastViewController.swift */,
 				A8A4B3C2267464D900179FB7 /* ForecastViewModel.swift */,
 				A8A4B3C4267464FC00179FB7 /* SingleDayForecastViewController.swift */,
 			);

@@ -23,7 +23,7 @@ class ForecastTableViewCell: UITableViewCell {
         imageView.image = UIImage(systemName: "sun.min")
         imageView.tintColor = .black
         NSLayoutConstraint.activate([
-            imageView.widthAnchor.constraint(equalToConstant: 60),
+            imageView.widthAnchor.constraint(equalToConstant: 44),
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor)
         ])
         return imageView
@@ -63,9 +63,18 @@ class ForecastTableViewCell: UITableViewCell {
     }
     
     func bindForecast(_ forecast: Forecast) {
-        let weekDay = DateFormatter.weekDay.string(from: forecast.date)
+        let weekDay: String = {
+            if Calendar.current.isDateInToday(forecast.date) {
+                return "Today"
+            } else if Calendar.current.isDateInTomorrow(forecast.date) {
+                return "Tomorrow"
+            } else {
+                return DateFormatter.weekDay.string(from: forecast.date)
+            }
+        }()
         let monthAndDate = DateFormatter.monthAndDate.string(from: forecast.date)
-        dateLabel.text = "\(weekDay)), \(monthAndDate)"
+        
+        dateLabel.text = "\(weekDay), \(monthAndDate)"
         temperatureLabel.text = "👆 \(forecast.high)° / 👇 \(forecast.low)°"
         
         imageRequestToken = UIImageLoader.shared.load(forecast.icon, into: iconImageView)

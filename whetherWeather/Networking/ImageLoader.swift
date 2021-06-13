@@ -14,6 +14,7 @@ class ImageLoader {
     static let shared = ImageLoader()
     
     private let backgroundQueue = DispatchQueue(label: "wp.imageLoading", qos: .userInteractive, attributes: .concurrent)
+    private let session = URLSession.shared
     private var cache = NSCache<NSURL, UIImage>()
     
     func load(_ url: URL) -> AnyPublisher<UIImage?, Never> {
@@ -23,7 +24,7 @@ class ImageLoader {
             return Just(cachedImage).eraseToAnyPublisher()
         }
         
-        return URLSession.shared.dataTaskPublisher(for: url)
+        return session.dataTaskPublisher(for: url)
             .map(\.data)
             .map(UIImage.init)
             .replaceError(with: nil)

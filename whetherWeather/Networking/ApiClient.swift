@@ -9,11 +9,7 @@ import Foundation
 import Combine
 
 enum ApiClientError: Swift.Error {
-    case invalidUrl
-    case invalidData
-    case decoding
-    case network(Swift.Error)
-    case unknown
+    case invalidUrl    
 }
 
 

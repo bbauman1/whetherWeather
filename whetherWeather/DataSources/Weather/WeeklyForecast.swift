@@ -15,7 +15,7 @@ extension WeeklyForecast {
         self = response.daily.compactMap { day in
             guard
                 let primaryWeather = day.weather.first,
-                let url = URL(string: "openweathermap.org/img/wn/\(primaryWeather.icon)@2x.png")
+                let url = URL(string: "https://openweathermap.org/img/wn/\(primaryWeather.icon)@2x.png")
             else {
                 return nil
             }

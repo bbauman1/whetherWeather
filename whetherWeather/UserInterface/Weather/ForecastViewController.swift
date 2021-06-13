@@ -53,8 +53,11 @@ class ForecastViewController: UIViewController {
     
     private var cancellables = Set<AnyCancellable>()
     
-    init(weatherDataSource: WeatherDataSource) {
-        self.viewModel = .init(weatherDataSource: weatherDataSource)
+    init(
+        weatherDataSource: WeatherDataSource,
+        locationDataSource: LocationDataSource
+    ) {
+        self.viewModel = .init(weatherDataSource: weatherDataSource, locationDataSource: locationDataSource)
         
         super.init(nibName: nil, bundle: nil)
         
@@ -97,6 +100,8 @@ class ForecastViewController: UIViewController {
             showLoading(false)
         case .failed(let error):
             showAlert(for: error)
+        case .noLocationPermission:
+            break
         }
     }
     
@@ -126,11 +131,20 @@ class ForecastViewController: UIViewController {
     private func setUpNavBar() {
         navigationItem.title = "Forecast"
         navigationItem.backButtonTitle = "Back"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "location"),
+            style: .plain,
+            target: self,
+            action: #selector(locationPermissionsButtonTapped))
     }
     
     private func setUpLayout() {
         view.coverWithSubview(tableView)
         view.coverWithSubview(loadingView)
+    }
+    
+    @objc private func locationPermissionsButtonTapped() {
+        
     }
 }
 

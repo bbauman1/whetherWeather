@@ -5,6 +5,7 @@
 //  Created by Brett Bauman on 6/11/21.
 //
 
+import Combine
 import Foundation
 import UIKit
 
@@ -44,7 +45,7 @@ class ForecastTableViewCell: UITableViewCell {
         return label
     }()
     
-    private var imageRequestToken: RequestToken?
+    private var imageRequest: AnyCancellable?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -59,7 +60,9 @@ class ForecastTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        UIImageLoader.shared.cancel(requestToken: imageRequestToken)
+        imageRequest?.cancel()
+        imageRequest = nil
+        iconImageView.image = nil
     }
     
     func bindForecast(_ forecast: Forecast) {
@@ -77,7 +80,11 @@ class ForecastTableViewCell: UITableViewCell {
         dateLabel.text = "\(weekDay), \(monthAndDate)"
         temperatureLabel.text = "👆 \(forecast.high)° / 👇 \(forecast.low)°"
         
-        imageRequestToken = UIImageLoader.shared.load(forecast.icon, into: iconImageView)
+        imageRequest = ImageLoader.shared.load(forecast.icon)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { [weak self] image in
+                self?.iconImageView.image = image
+            })
     }
     
     private func setUpLayout() {

@@ -13,11 +13,14 @@ class ForecastViewModel {
     @Published var state: State = .loading
     
     private let weatherDataSource: WeatherDataSource
+    private let locationDataSource: LocationDataSource
     
     init(
-        weatherDataSource: WeatherDataSource
+        weatherDataSource: WeatherDataSource,
+        locationDataSource: LocationDataSource
     ) {
         self.weatherDataSource = weatherDataSource
+        self.locationDataSource = locationDataSource
         
         reload()
     }
@@ -25,12 +28,16 @@ class ForecastViewModel {
     func reload() {
         state = .loading
         
-        weatherDataSource
-            .weeklyForecast(lat: 35, long: 150)
+            
+        
+        
+        
+            
+        self.weatherDataSource.weeklyForecast(lat: 30, long: 1)
             .map(State.loaded)
-            .catch { Just(State.failed($0)) }
+            .catch { _ in Just(State.loading) }
             .receive(on: DispatchQueue.main)
-            .assign(to: &$state)
+            .assign(to: &$state)                
     }
 }
 
@@ -39,5 +46,6 @@ extension ForecastViewModel {
         case loading
         case loaded(WeeklyForecast)
         case failed(Error)
+        case noLocationPermission
     }
 }

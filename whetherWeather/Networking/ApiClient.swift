@@ -2,7 +2,7 @@
 //  ApiClient.swift
 //  TableTest
 //
-//  Created by <redacted> on 5/12/21.
+//  Created by Brett Bauman on 5/12/21.
 //
 
 import Foundation

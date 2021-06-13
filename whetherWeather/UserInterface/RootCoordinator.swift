@@ -10,6 +10,7 @@ import UIKit
 class RootCoordinator: UINavigationController {
 
     private let weatherDataSource = WeatherDataSource()
+    private let locationDataSource = LocationDataSource()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,7 +19,9 @@ class RootCoordinator: UINavigationController {
     }
 
     private func setRootViewControllers() {
-        let forecastViewController = ForecastViewController(weatherDataSource: weatherDataSource)
+        let forecastViewController = ForecastViewController(
+            weatherDataSource: weatherDataSource,
+            locationDataSource: locationDataSource)
         forecastViewController.delegate = self
         
         setViewControllers([forecastViewController], animated: true)

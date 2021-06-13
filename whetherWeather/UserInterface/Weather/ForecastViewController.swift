@@ -28,6 +28,8 @@ class ForecastViewController: UIViewController {
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.separatorInset = .zero
+        tableView.tableFooterView = UIView()
+        tableView.backgroundView = locationPermissionsPromptView
         tableView.register(ForecastTableViewCell.self, forCellReuseIdentifier: ForecastTableViewCell.reuseIdentifier)
         return tableView
     }()
@@ -47,6 +49,22 @@ class ForecastViewController: UIViewController {
         ])
         
         return view
+    }()
+    
+    private lazy var locationPermissionsPromptView: UIView = {
+        let promptLabel = UILabel()
+        promptLabel.text = "Tap the button in the top right corner to grant location permissions"
+        promptLabel.font = .preferredFont(forTextStyle: .body)
+        promptLabel.numberOfLines = 0
+        promptLabel.textAlignment = .center
+        
+        let stackView = UIStackView(arrangedSubviews: [UIView(), promptLabel, UIView()])
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.distribution = .equalSpacing
+        stackView.directionalLayoutMargins = .init(top: 24, leading: 24, bottom: 24, trailing: 24)
+        stackView.isLayoutMarginsRelativeArrangement = true
+        return stackView
     }()
     
     private let viewModel: ForecastViewModel
@@ -89,6 +107,12 @@ class ForecastViewController: UIViewController {
                 self?.render(state)
             }
             .store(in: &cancellables)
+        
+        viewModel.$showLocationPermissionButton
+            .sink { [weak self] showButton in
+                self?.showLocationButton(showButton)
+            }
+            .store(in: &cancellables)
     }
 
     private func render(_ state: ForecastViewModel.State) {
@@ -101,7 +125,8 @@ class ForecastViewController: UIViewController {
         case .failed(let error):
             showAlert(for: error)
         case .noLocationPermission:
-            break
+            updateList(with: [])
+            showLoading(false)
         }
     }
     
@@ -128,14 +153,21 @@ class ForecastViewController: UIViewController {
         present(alert, animated: true)
     }
     
+    private func showLocationButton(_ show: Bool) {
+        if show {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(
+                image: UIImage(systemName: "location"),
+                style: .plain,
+                target: self,
+                action: #selector(locationPermissionsButtonTapped))
+        } else {
+            navigationItem.rightBarButtonItem = nil
+        }
+    }
+    
     private func setUpNavBar() {
-        navigationItem.title = "Forecast"
+        navigationItem.title = "7 Day Forecast"
         navigationItem.backButtonTitle = "Back"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "location"),
-            style: .plain,
-            target: self,
-            action: #selector(locationPermissionsButtonTapped))
     }
     
     private func setUpLayout() {
@@ -144,7 +176,7 @@ class ForecastViewController: UIViewController {
     }
     
     @objc private func locationPermissionsButtonTapped() {
-        
+        viewModel.requestLocationPermissions(on: self)
     }
 }
 

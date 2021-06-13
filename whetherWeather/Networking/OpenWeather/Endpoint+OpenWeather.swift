@@ -18,6 +18,7 @@ extension Endpoint {
                 .init(name: "lat", value: String(lat)),
                 .init(name: "lon", value: String(long)),
                 .init(name: "exclude", value: "minutely,hourly,alerts"),
+                .init(name: "units", value: "imperial"),
                 .init(name: "appid", value: Self.appId),
             ])
     }
